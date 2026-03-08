@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://85xsreuqe744"]
+
+[ext_resource type="Texture2D" uid="uid://ycuvej338srd" path="res://assets/tilesets/rocks.png" id="1_rocks"]
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="2_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mek2u"]
+size = Vector2(45, 20)
+
+[node name="Rock" type="StaticBody2D" unique_id=1566036996]
+script = ExtResource("2_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1524968494]
+texture = ExtResource("1_rocks")
+region_enabled = true
+region_rect = Rect2(0, 0, 64, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=522697244]
+position = Vector2(-0.5, 4)
+shape = SubResource("RectangleShape2D_mek2u")

@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=4]
+
+[ext_resource type="Texture2D" path="res://assets/tilesets/plowed_soil.png" id="1_soil"]
+[ext_resource type="Texture2D" path="res://assets/tilesets/plants.png" id="2_plants"]
+[ext_resource type="Script" path="res://scripts/crop_plot.gd" id="3_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_plot"]
+radius = 12.0
+
+[node name="CropPlot" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_script")
+
+[node name="SoilSprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_soil")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="CropSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_plants")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 64)
+position = Vector2(0, -16)
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_plot")
+
+[node name="GrowTimer" type="Timer" parent="."]
+one_shot = false
