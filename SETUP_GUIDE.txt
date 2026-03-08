@@ -1,0 +1,98 @@
+FERNVEIL - TILE & FARMING SETUP GUIDE
+======================================
+
+FARM LAYER SETUP (one time)
+---------------------------
+1. Open world.tscn in the Godot editor
+2. Select "FarmLayer" in the scene tree
+3. In the bottom panel, click the "TileSet" tab
+4. Click "+" to add a new atlas source
+5. Drag plants.png into the Texture field (this becomes source ID 2)
+6. The plants atlas will auto-slice into a 32x32 grid
+7. Optionally add plowed_soil.png as another atlas source for a dedicated soil tile
+
+PAINTING CROP PLOTS
+--------------------
+1. Select "FarmLayer" in the scene tree
+2. Switch to the "TileMap" tab in the bottom panel
+3. Paint soil tiles wherever you want plantable plots
+4. Run the game (F5), walk to a soil tile, press E to plant
+5. The tile will cycle through growth stages automatically
+6. Press E when fully grown to harvest (tile resets to soil)
+
+DIFFERENT CROP TYPES
+---------------------
+In FarmLayer's Inspector, change "Crop Column" to pick which crop gets planted:
+  Column 0 = generic plant
+  Column 1 = herb
+  Column 2 = leafy plant
+  Column 3 = pepper/tomato
+
+The stage_coords array in scripts/farm_layer.gd maps each column to its
+growth stages. Add more entries to support more crop types.
+
+ADDING ROCKS/OBSTACLES (tile painting)
+---------------------------------------
+1. Select "ObstacleLayer" in the scene tree
+2. In TileSet tab, click "+" and add rocks.png (or bushes.png, trees.png)
+3. Select rock tiles, expand Physics > Physics Layer 0
+4. Draw a collision polygon on each rock tile
+5. Switch to TileMap tab, select ObstacleLayer, and paint rocks
+
+ADDING INTERACTABLE OBJECTS (scene instances)
+----------------------------------------------
+1. Right-click "world" node > Instantiate Child Scene (Ctrl+Shift+A)
+2. Pick mushroom.tscn (or any scene with interactable.gd)
+3. Position it in the viewport
+4. Ctrl+D to duplicate and place more
+5. Each instance has a "Message" property in the Inspector
+
+REPLACING ART WITH YOUR OWN
+-----------------------------
+Same grid layout (32x32 tiles):
+  - Overwrite the PNG file with your new art, same filename
+  - Godot re-imports automatically, all painted tiles update
+
+Different grid/layout:
+  - Swap the Texture in the atlas source settings
+  - Adjust Texture Region Size if needed
+  - Repaint tiles that no longer match
+
+LAYER STRUCTURE
+----------------
+  GroundLayer  (z_index -1)  - grass, dirt, paths
+  DetailLayer  (z_index  0)  - flowers, details
+  FarmLayer    (z_index  0)  - plantable soil, growing crops
+  ObstacleLayer(z_index  1)  - rocks, trees, walls (with collision)
+  Player       (z_index  0)  - CharacterBody2D
+
+CONTROLS
+---------
+  WASD  - Move
+  E     - Interact (plant, harvest, talk to objects)
+
+FILE STRUCTURE
+---------------
+  assets/
+    characters/Base.png          - Player spritesheet
+    tilesets/
+      ground_tileset.png         - Mixel ground tiles (32x32, 12x12 grid)
+      rocks.png                  - Mixel rocks
+      bushes.png                 - Mixel bushes
+      trees.png                  - Mixel trees
+      mushrooms.png              - Mixel mushrooms
+      nature_details.png         - Mixel details
+      ruins.png                  - Mixel ruins
+      plants.png                 - Daneeklu crop growth stages
+      plowed_soil.png            - Daneeklu soil
+  scenes/
+    world.tscn                   - Main world scene
+    player.tscn                  - Player scene
+    mushroom.tscn                - Interactable mushroom
+    crop_plot.tscn               - Standalone crop plot (legacy, use FarmLayer instead)
+    rock.tscn                    - Standalone rock obstacle
+  scripts/
+    player.gd                   - Player movement + interaction
+    farm_layer.gd               - Tile-based farming system
+    interactable.gd             - Generic interactable (mushrooms, signs, etc.)
+    crop_plot.gd                - Standalone crop logic (legacy, use farm_layer.gd instead)
