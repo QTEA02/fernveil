@@ -41,11 +41,70 @@ ADDING ROCKS/OBSTACLES (tile painting)
 
 ADDING INTERACTABLE OBJECTS (scene instances)
 ----------------------------------------------
-1. Right-click "world" node > Instantiate Child Scene (Ctrl+Shift+A)
+Placing existing interactables:
+1. Right-click "Interactables" node > Instantiate Child Scene (Ctrl+Shift+A)
 2. Pick mushroom.tscn (or any scene with interactable.gd)
 3. Position it in the viewport
 4. Ctrl+D to duplicate and place more
 5. Each instance has a "Message" property in the Inspector
+
+Creating a NEW interactable from scratch:
+1. Create a new scene (Scene > New Scene)
+2. Pick Area2D as the root node
+3. Add a Sprite2D child (drag in whatever texture you want)
+4. Add a CollisionShape2D child (give it a CircleShape2D or RectangleShape2D)
+5. Select the root Area2D node:
+   - In Inspector, set Collision > Layer to 2 (uncheck layer 1)
+   - Set Collision > Mask to none (uncheck all)
+   - Drag scripts/interactable.gd into the Script property
+6. In the Inspector, set the "Message" to whatever you want it to say
+7. Save the scene (e.g. scenes/sign.tscn, scenes/chest.tscn, etc.)
+8. Place it in the world under the "Interactables" node (see above)
+
+Requirements for interactable.gd to work:
+  - Must be on an Area2D node
+  - Must be on collision layer 2 (that's what the player's InteractArea scans)
+  - Must have a CollisionShape2D child (otherwise nothing detects it)
+
+Adding COLLISION to interactables (so the player can't walk through them):
+1. Add a StaticBody2D child node to the root Area2D
+2. Set StaticBody2D's Collision > Layer to 1 (physics layer)
+3. Add a CollisionShape2D child to the StaticBody2D
+4. Give it a shape (CircleShape2D or RectangleShape2D, slightly smaller than the sprite)
+   The mushroom.tscn already has this set up as a reference.
+
+For custom behavior beyond printing a message:
+  - Duplicate interactable.gd and rename it (e.g. chest.gd)
+  - Edit the interact() function with your own logic
+  - Attach the new script to your scene instead
+
+DAY/NIGHT CYCLE
+-----------------
+The DayNightCycle node (CanvasModulate) handles time and screen tinting.
+The TimeHUD (CanvasLayer) displays the clock, day number, and phase.
+
+Phases:
+  Dawn  (5:00 AM - 7:00 AM)  - warm transition from night to day
+  Day   (7:00 AM - 6:00 PM)  - full brightness, normal gameplay
+  Dusk  (6:00 PM - 8:00 PM)  - warm transition from day to night
+  Night (8:00 PM - 5:00 AM)  - blue-purple tint, supernatural events
+
+Tuning time speed:
+  Select DayNightCycle in the scene tree, change "Seconds Per Minute" in Inspector
+    1.0 = real-time feel (24 real minutes per full day) — default
+    0.1 = fast testing (2.4 real minutes per full day)
+    2.0 = slower pace (48 real minutes per full day)
+
+Signals (for hooking other systems):
+  phase_changed(new_phase: String)  - fires when dawn/day/dusk/night transitions
+  hour_changed(hour: int)           - fires every in-game hour
+  new_day(day_number: int)          - fires at midnight
+
+Checking time from other scripts:
+  var cycle = get_node("/root/world/DayNightCycle")
+  if cycle.is_night():
+      # do night-only logic
+  var time_text = cycle.get_time_string()  # e.g. "2:30 PM"
 
 REPLACING ART WITH YOUR OWN
 -----------------------------
@@ -65,6 +124,8 @@ LAYER STRUCTURE
   FarmLayer    (z_index  0)  - plantable soil, growing crops
   ObstacleLayer(z_index  1)  - rocks, trees, walls (with collision)
   Player       (z_index  0)  - CharacterBody2D
+  DayNightCycle              - CanvasModulate (screen tint + time tracking)
+  TimeHUD      (CanvasLayer) - Clock, day counter, phase display
 
 CONTROLS
 ---------
@@ -95,4 +156,6 @@ FILE STRUCTURE
     player.gd                   - Player movement + interaction
     farm_layer.gd               - Tile-based farming system
     interactable.gd             - Generic interactable (mushrooms, signs, etc.)
+    day_night_cycle.gd          - Day/night cycle (time, phases, screen tint)
+    time_hud.gd                 - HUD displaying clock, day, and phase
     crop_plot.gd                - Standalone crop logic (legacy, use farm_layer.gd instead)

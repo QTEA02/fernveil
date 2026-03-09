@@ -1,0 +1,860 @@
+Fernveil
+Game Design Document (GDD)
+Iteration 5 — Working Draft
+February 28, 2026
+
+Table of Contents
+1. Introduction
+2. Legal
+3. Marketing
+4. Gameplay
+5. Game Flow
+6. Story
+7. Content Lists & Appendix
+
+1. Introduction
+One-liner
+A cozy greenhouse sim by day and a fantasy crafting shop by night — grow strange plants, craft
+remedies for eerie customers, and help a town slowly remember what it tried to forget.
+
+Player experience goals
+•
+
+Cozy routine that feels comforting and productive.
+
+•
+
+A steady, creeping mystery that escalates with progress.
+
+•
+
+Choices that matter, without overwhelming branching complexity.
+
+Design pillars
+1. Greenhouse-first management (curated planting, upgrades, atmosphere).
+2. Night shift narrative (customers drive story progression).
+3. Plants with traits (effects matter mechanically and narratively).
+4. Light–medium consequences (meters plus a few flags, not endless branches).
+5. Tiny outdoor support plot (utility crops fuel crafting; prevents scope creep).
+
+Target platform
+•
+
+PC (Steam / itch.io).
+
+•
+
+Optional controller support.
+
+2. Legal
+Ownership & IP
+Original characters, world, narrative, and gameplay systems.
+
+Third-party content
+•
+
+Placeholder art and audio permitted during prototyping.
+
+•
+
+All external assets tracked in an Asset Credits Log with license terms.
+
+Content rating target
+Teen: unsettling themes, paranormal imagery, mild dread. No extreme gore required.
+
+3. Marketing
+Deliver targets (internal milestones)
+•
+
+Prototype: Core loop (plant/craft/shop/day-night) plus one in-game week of content.
+
+•
+
+Vertical slice: Act 1 intro plus 6–10 plants, 10–15 recipes, and 3 recurring customers.
+
+•
+
+Full release: Acts 1–3 plus endgame, and 20–30 plants.
+
+Genre
+Cozy sim / crafting-shop management / narrative mystery with light horror.
+
+Category
+Single-player, story-driven, replayable through outcomes.
+
+Similar games (positioning)
+•
+
+Cozy routine: Stardew Valley
+
+•
+
+Plant mystery and customer requests: Strange Horticulture
+
+•
+
+Crafting focus: Potion Craft
+
+•
+
+Dark-cozy tone: Graveyard Keeper
+
+Setting
+A quiet town at the forest’s edge. Your greenhouse sits on old glass foundations — locals say
+the glass “holds back the woods.”
+
+Visual style
+•
+
+Day: warm lighting, soft edges, inviting clutter, gentle UI.
+
+•
+
+Night: cool tones, fog, candle/glow lighting, reflections emphasized.
+
+Art Direction: Color Palette
+
+Art Direction: Pixel Art Style Reference
+• 2D pixel art with painterly lighting and high-contrast glow accents (cozy night atmosphere).
+• Top-down perspective with readable silhouettes and dense environmental detail (plants, props,
+textures).
+• Lighting emphasis: warm lantern pools against cool ambient moonlight; saturated glow used
+sparingly for magical elements.
+• Color usage: muted base tones with selective neon/bioluminescent highlights (mushrooms,
+fireflies, veil effects).
+
+High concept
+Run a greenhouse shop. By crafting items from plants with supernatural traits, you fulfill night
+requests that restore the town memories.
+
+Competitive differentiators
+•
+
+Curated plant roster (each plant “means something”).
+
+•
+
+Day/night character shift (same NPC, different persona as Memory grows).
+
+•
+
+Meaningful outcomes without massive branching (meters and key flags).
+
+Technology
+•
+
+Engine: Godot (2D).
+
+•
+
+Core systems: day/night cycle, farming, crafting, inventory, shop/customer queue,
+dialogue/quests, event triggers, save/load.
+
+System requirements (target)
+Low-end friendly 2D; keyboard/mouse first.
+
+4. Gameplay
+Core loop
+Day → Prepare → Night → Resolve
+6. Day: tend greenhouse, harvest, maintain outdoor support plot, visit town, forage forest edge.
+7. Prepare: craft inventory, stock shelves, plan night-only planting, choose stability vs profit.
+8. Night: shop opens; strange customers request effects; you choose how to fulfill.
+9. Resolve: earn money, update meters, unlock story/recipes/areas, trigger veil events.
+
+Simulation systems
+Progression meters
+•
+
+Memory (0–100): Town recalls truth; unlocks areas, dialogue, lore, and recipes.
+
+•
+
+Veil Pressure (0–100): Paranormal intensity; increases rare customers plus risk events.
+
+•
+
+Trust (per key NPC, 0–5 hearts): Affects help, discounts, special quests, and ending variants.
+
+Scope guardrail rule
+To prevent scope creep, the game uses a clear split:
+•
+
+Greenhouse = supernatural/story plants.
+
+•
+
+Outdoor support plot = utility crops only (binders, stabilizers, compost inputs, ward
+ingredients).
+
+Economy
+•
+
+Cozy baseline: predictable earnings from standard goods.
+
+•
+
+High-margin: rare night customers and risky recipes.
+
+•
+
+Outdoor utility crops reduce bottlenecks and enable planning choices.
+
+Player Interactions
+Animal Husbandry (Micro-Barn System)
+• Fernveil includes a small-scale animal system to support a farm vibe without expanding into a
+full ranch simulator.
+• Animals primarily provide crafting ingredients (milk, eggs, honey) used in teas, tonics, and
+salves. The system is greenhouse-adjacent and intentionally limited in scope.
+Core Loop
+• Feed → Care → Collect → Craft.
+• Daily interactions are quick (1–2 actions per animal) to preserve the cozy pacing.
+Buildings and Capacity
+• Micro-Barn (courtyard-attached): starts with 1 stall and upgrades up to 4 stalls total.
+• Coop corner (optional, can share barn footprint): 2–6 chickens depending on tier.
+• Beehive box (outdoor courtyard): 1–3 hives depending on tier; passive collection. Animal Types
+and Outputs (Starter Set) Cow
+• Primary output: Milk (daily).
+• Rare output: Cream (chance increased by care).
+
+• Veil interaction (optional): “Veil-Kissed Milk” may appear when Veil Pressure is high or after
+certain moon events—powerful but risky ingredient. Chicken
+• Primary output: Eggs (frequent).
+• Use: binding agents for recipes, baked comfort items, or stabilizers for risky concoctions.
+Beehive
+• Primary output: Honey (passive, collected every few days).
+• Use: sweetener base for teas/tonics; improves “comfort” outcomes and some customer
+satisfaction results. Crafting Integration (Examples)
+• Witchmint Milk Tonic: calm/clarity; supports Trust-positive solutions.
+• Moonflower Latte (night-only): concealment; increases Veil slightly.
+• Ashbloom Cream Salve: cleansing/removes taint; high-value late-game craft.
+• Honeyed Dusk Tea: sleep/dream control; safer alternative to risky nightshade paths.
+Replayability Hooks
+• Daily Orders Board can include animal-based requests (e.g., “2 Milk + 1 Calming Tea”).
+• Weekly Market Day can feature category boosts (e.g., “Dairy Week” or “Honey Week”).
+• Greenhouse Challenges may require animal ingredients (e.g., “Craft 3 tonics using milk
+base”).
+• Full Moon Favors can occasionally request a specific offering (e.g., warm milk infused with
+Silver Sage). Scope Guardrails
+• No breeding/genetics systems.
+• No complex health/disease simulation; care is simple and positive (pet/brush/feed).
+• Animals remain courtyard/barn-contained; no wide roaming AI.
+• Animals serve crafting and atmosphere first; the greenhouse remains the primary gameplay
+center.
+
+Greenhouse actions
+•
+
+Plant, water, fertilize, harvest.
+
+•
+
+Manage limited bed space; move planters as upgrades unlock.
+
+•
+
+Upgrade wings and crafting stations.
+
+Outdoor support plot actions
+•
+
+Plant utility crops (limited tiles, upgradeable but intentionally small).
+
+•
+
+Manage compost for growth boosts.
+
+•
+
+Collect water from rain barrel (resource and recipe ingredient).
+
+•
+
+Upgrade a ward post to reduce Veil spikes (tradeoff: consumes materials).
+
+Crafting stations
+•
+
+Drying Rack: herbs → dried ingredients.
+
+•
+
+Mortar & Pestle: dried ingredients → powders.
+
+•
+
+Kettle: teas and infusions.
+
+•
+
+Press: oils and resins.
+
+•
+
+Bouquet Table: arrangements that carry traits.
+
+Shop interaction (night)
+•
+
+Customer request arrives as an effect/intent.
+
+•
+
+Choose one of 2–3 plausible crafted solutions.
+
+•
+
+Sometimes pick a safer vs riskier potency option.
+
+Quests & objectives
+Night customer orders (primary)
+Requests are framed as effects and intent, escalating over time. Some recurring customers form
+short story chains.
+•
+
+“I need to sleep without dreaming.”
+
+•
+
+“I need something that hides me from my own thoughts.”
+
+•
+
+“I need something that tells the truth when steeped.”
+
+Day requests (secondary)
+•
+
+Normal errands tied to relationships and upgrades.
+
+•
+
+Often reward tools, seeds, wing parts, or recipe hints.
+
+Full moon garden favors (milestones)
+•
+
+One major objective plus a choice at each full moon.
+
+•
+
+Success: major unlock (wing, rare cutting, permanent perk).
+
+•
+
+Failure: Veil Pressure spike and a spooky event week.
+
+Goals
+•
+
+Restore and expand the greenhouse.
+
+•
+
+Master crafting and plant traits.
+
+•
+
+Restore Memory and uncover the pact.
+
+•
+
+Keep Veil Pressure manageable (or gamble with it).
+
+•
+
+Reach an ending shaped by your approach and relationships.
+
+Consequences (light–medium branching)
+Decision model
+•
+
+Most choices affect Money, Memory, Veil Pressure, and/or Trust.
+
+•
+
+Occasional flags track major moments (e.g., lying to a key NPC, using dangerous plants,
+honoring or rejecting a Garden Favor).
+
+Example outcome
+Customer wants “to disappear”:
+•
+
+Moonflower Tea (Invisibility): Memory +, Veil +
+
+•
+
+Witchmint Tonic (Calm + conceal): Trust +, Money +
+
+•
+
+Nightshade Resin (Dangerous): Money ++, Veil ++, Trust –
+
+Environments
+•
+
+Greenhouse Main Hall (Home Base): Beds, core stations, shop counter, storage.
+
+•
+
+Climate Wing: Humidity/temperature upgrades; rare plant families.
+
+•
+
+Night Wing: Night-only plots; veil-reactive plants; risk/reward growth.
+
+•
+
+Backroom: Late-game station plus ledger wall plus endgame crafting.
+
+•
+
+Outdoor Courtyard Support Plot: Small expandable tiles; utility crops only.
+
+•
+
+Town Square & Key Buildings: Relationships, errands, upgrades via NPCs.
+
+•
+
+Forest Edge Path: Forage, rare seeds, story encounters.
+
+•
+
+Old Conservatory Ruins: Mid-game unlock; lore plus high-tier reagents.
+
+Navigation
+•
+
+Top-down movement.
+
+•
+
+Compact node map (Greenhouse / Town / Forest / Conservatory).
+
+•
+
+Quick travel unlock after early Act 1 to keep pacing smooth.
+
+Difficulty & failure states
+•
+
+No harsh punishment loops.
+
+•
+
+Failure typically results in reduced payout, Trust loss, Veil Pressure increase, or a temporary
+haunting event that affects upcoming nights.
+
+Multiplayer
+Not planned.
+
+Upgrade tree (3 tiers)
+Tier 1 — Stabilize the shop
+•
+
+Storage shelf capacity upgrade.
+
+•
+
+Workbench upgrade (faster craft or extra slot).
+
+•
+
+Outdoor courtyard unlock (6 tiles plus compost bin).
+
+Tier 2 — Expand the boundary
+•
+
+Climate Wing unlock.
+
+•
+
+Rain barrel upgrade (more capacity plus recipe use).
+
+•
+
+Courtyard expansion (+6 tiles) plus herb wall bonus.
+
+Tier 3 — Veil infrastructure
+•
+
+Night Wing unlock.
+
+•
+
+Backroom unlock (ritual-grade station plus ledger wall).
+
+•
+
+Ward post upgrade (reduces Veil spikes; costs utility crops).
+
+5. Game Flow
+Splash screens
+Studio logo → Title.
+
+Intro cinematic (short)
+•
+
+Player arrives, unlocks greenhouse, finds a sealed ledger.
+
+•
+
+First night: a customer appears before you open, implying the shop was expected.
+
+Main menu
+•
+
+Continue
+
+•
+
+New Game
+
+•
+
+Settings
+
+•
+
+Credits
+
+Settings
+•
+
+Audio (music/SFX/ambient).
+
+•
+
+Controls.
+
+•
+
+Accessibility: text size, screen shake toggle, reduce flicker mode.
+
+In-game UI
+•
+
+Time-of-day indicator (Day / Prepare / Night).
+
+•
+
+Meters: Memory and Veil Pressure; Trust shown in journal.
+
+•
+
+Inventory and crafting book.
+
+•
+
+Journal: plants, recipes, customers, memory fragments.
+
+Maps
+•
+
+Node-based map with icons (Greenhouse / Town / Forest / Conservatory).
+
+•
+
+Greenhouse blueprint view showing wing unlocks.
+
+Save system
+•
+
+Autosave at day start and after night resolve.
+
+•
+
+Manual save in bedroom/backroom area (or via menu).
+
+6. Story
+Premise
+The greenhouse is more than a business — it is a boundary. The town once made a pact to keep
+something in the forest contained. The ledger holds “care instructions” that read like ritual
+notes. As you succeed, the town memories return… and so does the thing those memories were
+built to hide.
+
+Act structure
+
+Soft Acts (Internal Chapters)
+• Acts are used for pacing and production planning, but the UI does not show “Act 1/2/3.”
+Players experience progression as the town and nights change over time.
+• Act progression uses clear milestone objectives (not hidden grind thresholds). Milestone-based
+progression
+• Early → Midgame (Act 1 → Act 2) example trigger: Complete 1 Full Moon Favor, resolve 3
+recurring customer outcomes (not random orders), and discover 5 Memory Fragments.
+• Midgame → Late game (Act 2 → Act 3) example trigger: Unlock the Old Conservatory,
+complete 2 Full Moon Favors total, and resolve 2 key NPC night revelations. What changes
+between chapters
+• Customer pool expands (new request types + 1–2 new recurring customers).
+• New plant families and recipes unlock.
+• Town ambience updates (dialogue lines, small prop swaps, subtle environmental tells).
+• Veil events intensify primarily through Veil Pressure so escalation still reflects player choices.
+Cozy freedom preserved
+• Players can linger in the cozy loop: key story progression waits until a clearly marked story
+request/favor is accepted.
+• Optional pacing tools: “end day early” and reduced story-customer frequency if the player
+declines story hooks.
+Act 1 — The Glass Breathes
+•
+
+Establish day/night loop and basic crafting.
+
+•
+
+Introduce first recurring customers (3).
+
+•
+
+First full moon: Garden Favor appears.
+
+•
+
+Reveal: condensation forms symbols on the glass that match the ledger.
+
+Act 1 closing beat: a townsfolk recognizes you at night and insists you have been here before.
+Act 2 — Names Return
+•
+
+Memory fragments appear in NPC dialogue and locations.
+
+•
+
+Night versions of characters become more direct.
+
+•
+
+Unlock: Old Conservatory Ruins.
+
+•
+
+Ledger pages collected as Memory Fragments.
+
+Act 2 closing beat: you discover the last keeper vanished — and the greenhouse was the lock.
+Act 3 — The Veil Thins
+•
+
+Rare plants introduce higher-risk crafting.
+
+•
+
+Veil events intensify if pressure is high.
+
+•
+
+Key choice: stabilize the pact, bargain with it, or break it.
+
+Act 3 closing beat: the garden demands a final favor.
+
+Endings (light–medium)
+Three major endings, each with small variations based on Trust and a few key flags:
+•
+
+Seal the Veil (stability ending): Memory high, Veil managed.
+
+•
+
+Bargain (compromise ending): medium Memory, strong Trust with key NPC(s).
+
+•
+
+Break the Pact (risk ending): Veil high, dangerous solutions favored.
+
+Variations reflect who stands with you, what you sacrificed, and whether the town truly
+remembers.
+
+Replayability Systems
+• Fernveil supports two valid playstyles: (1) relaxed farming/crafting “grind” loops and (2)
+quest driven progression that unlocks new content faster.
+• Repeatable systems provide structure and variety without requiring heavy branching. Daily
+Orders Board (Day)
+• 3–5 standard orders per day (common goods, utility crops, basic remedies).
+• Primary rewards: money + common materials; occasional seed packets.
+
+• Designed for chill play sessions and steady upgrade progress.
+Night Requests (Rotating Pool)
+• Night customers are a mix of random repeatable and recurring story customers.
+• Weekly rotation changes which request types appear (helps runs feel different).
+• Multiple solution options (safe vs risky) meaningfully affect Veil/Trust outcomes. Weekly
+Market Day (Day Event)
+• Once per week, one product category gets boosted demand/prices (e.g., Tea Week, Bouquet
+Week, Ward Week).
+• Rewards: high profit opportunities + occasional rare utility seeds. • Encourages planning and
+variety in planting/crafting.
+Full Moon Favors (Milestone Event)
+• The garden requests a major favor; completing it grants significant unlocks or permanent
+perks.
+• Optional timing: favors can be delayed, but ignoring them raises Veil Pressure and increases
+haunting events.
+• Keeps the story spine present without forcing fast progression. Greenhouse Challenges
+(Optional Objectives)
+• Rotating weekly challenges (grow under conditions, fulfill themed orders, harvest targets).
+• Rewards: cosmetics, rare cuttings, or upgrade components.
+• Turns grinding into satisfying mini-goals. Collection Journal (Long-Term Completion)
+• Track discovered plants, recipes, customer types, and Memory Fragments.
+• Milestone rewards at 25/50/75/100% completion (cosmetics, rare seeds, special visitors).
+• Supports post-story play and completion-focused replayability.
+Scope Guardrails
+
+• Outdoor support plot remains intentionally small and utility-focused to preserve the
+greenhouse first identity and prevent farm-sim scope creep.
+• Repeatable systems always pay out at least one meaningful reward (money, useful
+materials/seeds, cosmetics, or permanent upgrades) to avoid “busywork.”
+
+7. Content Lists & Appendix
+Starter plant list (core 12)
+•
+
+Moonflower: Concealment/invisibility (Veil +).
+
+•
+
+Witchmint: Calm/clarity (Trust +).
+
+•
+
+Glassreed: Warding/protection (Veil –).
+
+•
+
+Dusk Lavender: Sleep/dream control.
+
+•
+
+Ashbloom: Cleansing/taint removal (rare).
+
+•
+
+Thornberry: Courage/endurance.
+
+•
+
+Mourning Lily: Memory recall (Memory +).
+
+•
+
+Foxglove: Risky potency (Money + / Trust – if misused).
+
+•
+
+Sunbud: Warmth/stability (day boost).
+
+•
+
+Hushcap (mushroom): Silence/secrecy.
+
+•
+
+Silver Sage: Truth/lies revealed (story key).
+
+•
+
+Nightshade: Dangerous shortcuts (Veil ++).
+
+Outdoor utility crops (examples)
+•
+
+Binder Ivy: Stabilizes recipes; reduces negative outcomes.
+
+•
+
+Saltroot: Ward ingredient; Veil reduction component.
+
+•
+
+Copperleaf: Upgrade ingredient; ritual conductivity herb.
+
+•
+
+Comfrey: Safe base; improves gentle remedies.
+
+•
+
+Sootgrain: Compost booster; faster growth in greenhouse.
+
+Craft categories
+•
+
+Teas/Infusions (effects, buffs, story solutions).
+
+•
+
+Tinctures/Oils (stronger potency, higher risk).
+
+•
+
+Bouquets (social outcomes; Trust-focused).
+
+•
+
+Wards/Talismans (Veil management plus area unlocks).
+
+•
+
+Resins/Powders (advanced crafting plus late-game requirements).
+
+Veil events (example set)
+Low Veil
+•
+
+Flickering reflections.
+
+•
+
+Soft whispers.
+
+•
+
+Wet footprints that vanish near the glass.
+
+Medium Veil
+•
+
+Missing blooms.
+
+•
+
+Warped shadows.
+
+•
+
+Customers with distorted speech.
+
+High Veil
+•
+
+Locked doors briefly rattling.
+
+•
+
+Plants changing traits overnight.
+
+•
+
+Rare impossible customers.
+
+Key NPC set (starter roster)
+•
+
+The Librarian (Memory fragments; lore gatekeeper).
+
+•
+
+The Carpenter (greenhouse upgrades; town trust anchor).
+
+•
+
+The Herbalist (recipe hints; safe alternatives; anti-veil tools).
+
+•
+
+The Night Drifter (recurring customer; tests ethics; money vs consequences).
+
+•
+
+The Faceless Regular (appears on specific nights; major plot thread).
+
+•
+
+A Town Friend (day comfort; night persona gradually revealed).
+
+

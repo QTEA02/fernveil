@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" path="res://scenes/mushroom.tscn" id="4_k0juu"]
 [ext_resource type="PackedScene" path="res://scenes/crop_plot.tscn" id="5_71j4m"]
 [ext_resource type="Script" path="res://scripts/farm_layer.gd" id="6_farm"]
+[ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="7_daynight"]
+[ext_resource type="Script" path="res://scripts/time_hud.gd" id="8_timehud"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rwgxs"]
 texture = ExtResource("2_ground")
@@ -201,10 +203,54 @@ tile_set = SubResource("TileSet_proto")
 tile_set = SubResource("TileSet_proto")
 script = ExtResource("6_farm")
 
-[node name="Player" parent="." unique_id=1064465184 instance=ExtResource("1_nnsk1")]
+[node name="Interactables" type="Node2D" parent="."]
 
-[node name="Mushroom" parent="." unique_id=545607259 instance=ExtResource("4_k0juu")]
+[node name="Mushroom" parent="Interactables" unique_id=545607259 instance=ExtResource("4_k0juu")]
 position = Vector2(-55, 39)
 
-[node name="Mushroom2" parent="." unique_id=1684686078 instance=ExtResource("4_k0juu")]
+[node name="Mushroom2" parent="Interactables" unique_id=1684686078 instance=ExtResource("4_k0juu")]
 position = Vector2(-52, -48)
+
+[node name="DayNightCycle" type="CanvasModulate" parent="."]
+script = ExtResource("7_daynight")
+
+[node name="TimeHUD" type="CanvasLayer" parent="."]
+layer = 10
+script = ExtResource("8_timehud")
+
+[node name="TimeLabel" type="Label" parent="TimeHUD"]
+offset_right = 150.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "6:00 AM"
+horizontal_alignment = 1
+
+[node name="DayLabel" type="Label" parent="TimeHUD"]
+offset_top = 22.0
+offset_right = 150.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "Day 1"
+horizontal_alignment = 1
+
+[node name="PhaseLabel" type="Label" parent="TimeHUD"]
+offset_top = 42.0
+offset_right = 150.0
+offset_bottom = 72.0
+theme_override_colors/font_color = Color(0.9, 0.85, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+text = "Day"
+horizontal_alignment = 1
+
+[node name="Player" parent="." unique_id=1064465184 instance=ExtResource("1_nnsk1")]
