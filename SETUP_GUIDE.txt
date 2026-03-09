@@ -39,39 +39,66 @@ ADDING ROCKS/OBSTACLES (tile painting)
 4. Draw a collision polygon on each rock tile
 5. Switch to TileMap tab, select ObstacleLayer, and paint rocks
 
-ADDING INTERACTABLE OBJECTS (scene instances)
-----------------------------------------------
-Placing existing interactables:
-1. Right-click "Interactables" node > Instantiate Child Scene (Ctrl+Shift+A)
-2. Pick mushroom.tscn (or any scene with interactable.gd)
+ADDING PICKUPS (mushrooms, flowers, items you collect)
+-------------------------------------------------------
+Pickups use scripts/pickup.gd — press E to collect them, they disappear.
+All pickup scenes live in scenes/pickups/.
+
+Placing existing pickups:
+1. Right-click "Pickups" node in the scene tree > Instantiate Child Scene (Ctrl+Shift+A)
+2. Pick a scene from scenes/pickups/ (e.g. mushroom.tscn)
 3. Position it in the viewport
 4. Ctrl+D to duplicate and place more
-5. Each instance has a "Message" property in the Inspector
+5. Each instance has "Item Name" and "Quantity" properties in the Inspector
+
+Creating a NEW pickup from scratch:
+1. Create a new scene (Scene > New Scene)
+2. Pick Area2D as the root node
+3. Add a Sprite2D child (drag in whatever texture you want)
+4. Add a CollisionShape2D child (for interaction detection)
+5. Add a StaticBody2D child (for physical collision):
+   - Set StaticBody2D's Collision > Layer to 1
+   - Add a CollisionShape2D child to it (slightly smaller than the sprite)
+6. Select the root Area2D node:
+   - Set Collision > Layer to 2 (uncheck layer 1)
+   - Set Collision > Mask to none (uncheck all)
+   - Drag scripts/pickup.gd into the Script property
+7. Set "Item Name" (e.g. "Wildflower"), optionally set "Quantity" and "Message"
+8. Save to scenes/pickups/ (e.g. scenes/pickups/wildflower.tscn)
+9. Place it in the world under the "Pickups" node (see above)
+
+pickup.gd properties:
+  Item Name  - name of the item (used in pickup message, future inventory)
+  Quantity   - how many to give on pickup (default 1)
+  Message    - custom message (leave blank for auto "Picked up [Item Name]!")
+
+ADDING INTERACTABLE OBJECTS (signs, NPCs, non-collectible things)
+------------------------------------------------------------------
+Interactables use scripts/interactable.gd — press E to trigger, they stay in the world.
+Use these for things like signs, chests, or NPCs that don't disappear.
+
+Placing existing interactables:
+1. Right-click the appropriate container node > Instantiate Child Scene (Ctrl+Shift+A)
+2. Position it in the viewport
+3. Each instance has a "Message" property in the Inspector
 
 Creating a NEW interactable from scratch:
 1. Create a new scene (Scene > New Scene)
 2. Pick Area2D as the root node
 3. Add a Sprite2D child (drag in whatever texture you want)
-4. Add a CollisionShape2D child (give it a CircleShape2D or RectangleShape2D)
+4. Add a CollisionShape2D child (for interaction detection)
 5. Select the root Area2D node:
-   - In Inspector, set Collision > Layer to 2 (uncheck layer 1)
+   - Set Collision > Layer to 2 (uncheck layer 1)
    - Set Collision > Mask to none (uncheck all)
    - Drag scripts/interactable.gd into the Script property
 6. In the Inspector, set the "Message" to whatever you want it to say
 7. Save the scene (e.g. scenes/sign.tscn, scenes/chest.tscn, etc.)
-8. Place it in the world under the "Interactables" node (see above)
-
-Requirements for interactable.gd to work:
-  - Must be on an Area2D node
-  - Must be on collision layer 2 (that's what the player's InteractArea scans)
-  - Must have a CollisionShape2D child (otherwise nothing detects it)
 
 Adding COLLISION to interactables (so the player can't walk through them):
 1. Add a StaticBody2D child node to the root Area2D
 2. Set StaticBody2D's Collision > Layer to 1 (physics layer)
 3. Add a CollisionShape2D child to the StaticBody2D
 4. Give it a shape (CircleShape2D or RectangleShape2D, slightly smaller than the sprite)
-   The mushroom.tscn already has this set up as a reference.
 
 For custom behavior beyond printing a message:
   - Duplicate interactable.gd and rename it (e.g. chest.gd)
@@ -123,6 +150,7 @@ LAYER STRUCTURE
   DetailLayer  (z_index  0)  - flowers, details
   FarmLayer    (z_index  0)  - plantable soil, growing crops
   ObstacleLayer(z_index  1)  - rocks, trees, walls (with collision)
+  Pickups      (Node2D)      - container for collectible items (mushrooms, flowers, etc.)
   Player       (z_index  0)  - CharacterBody2D
   DayNightCycle              - CanvasModulate (screen tint + time tracking)
   TimeHUD      (CanvasLayer) - Clock, day counter, phase display
@@ -149,13 +177,16 @@ FILE STRUCTURE
   scenes/
     world.tscn                   - Main world scene
     player.tscn                  - Player scene
-    mushroom.tscn                - Interactable mushroom
+    pickups/
+      mushroom.tscn              - Collectible mushroom
     crop_plot.tscn               - Standalone crop plot (legacy, use FarmLayer instead)
-    rock.tscn                    - Standalone rock obstacle
+    rock.tscn                    - Standalone rock obstacle (legacy)
+    mushroom.tscn                - Old mushroom (legacy, use pickups/mushroom.tscn instead)
   scripts/
     player.gd                   - Player movement + interaction
     farm_layer.gd               - Tile-based farming system
-    interactable.gd             - Generic interactable (mushrooms, signs, etc.)
+    pickup.gd                   - Collectible items (disappear on pickup)
+    interactable.gd             - Generic interactable (signs, NPCs — stays in world)
     day_night_cycle.gd          - Day/night cycle (time, phases, screen tint)
     time_hud.gd                 - HUD displaying clock, day, and phase
     crop_plot.gd                - Standalone crop logic (legacy, use farm_layer.gd instead)

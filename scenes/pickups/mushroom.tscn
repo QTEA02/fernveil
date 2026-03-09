@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=4]
+
+[ext_resource type="Texture2D" uid="uid://buck75smti1if" path="res://assets/tilesets/mushrooms.png" id="1_shrooms"]
+[ext_resource type="Script" path="res://scripts/pickup.gd" id="2_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detect"]
+radius = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 8.0
+
+[node name="Mushroom" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_script")
+item_name = "Mushroom"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_shrooms")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_detect")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_body")
