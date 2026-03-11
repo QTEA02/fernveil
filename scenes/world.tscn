@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://wxp0nkto5028" path="res://scripts/time_hud.gd" id="8_timehud"]
 [ext_resource type="Script" uid="uid://iop6jnc3y005" path="res://scripts/inventory_ui.gd" id="9_invui"]
 [ext_resource type="PackedScene" path="res://scenes/crop_plot.tscn" id="10_w7kh3"]
+[ext_resource type="Script" uid="uid://cn441gfbbx0yk" path="res://scripts/crafting_ui.gd" id="11_craftui"]
+[ext_resource type="PackedScene" path="res://scenes/crafting_station.tscn" id="12_craftstation"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rwgxs"]
 texture = ExtResource("2_ground")
@@ -391,6 +393,30 @@ horizontal_alignment = 1
 
 [node name="InventoryUI" type="CanvasLayer" parent="." unique_id=1726620784]
 script = ExtResource("9_invui")
+
+[node name="CraftingUI" type="CanvasLayer" parent="." unique_id=1700916114]
+script = ExtResource("11_craftui")
+
+[node name="CraftingStations" type="Node2D" parent="." unique_id=382560967]
+
+[node name="DryingRack" parent="CraftingStations" unique_id=1596583617 instance=ExtResource("12_craftstation")]
+position = Vector2(-103, 104)
+
+[node name="MortarPestle" parent="CraftingStations" unique_id=618253375 instance=ExtResource("12_craftstation")]
+position = Vector2(-58, 105)
+station_type = "Mortar & Pestle"
+
+[node name="Kettle" parent="CraftingStations" unique_id=1894191507 instance=ExtResource("12_craftstation")]
+position = Vector2(-104, 56)
+station_type = "Kettle"
+
+[node name="Press" parent="CraftingStations" unique_id=1623015380 instance=ExtResource("12_craftstation")]
+position = Vector2(20, 107)
+station_type = "Press"
+
+[node name="BouquetTable" parent="CraftingStations" unique_id=1390670730 instance=ExtResource("12_craftstation")]
+position = Vector2(-108, 9)
+station_type = "Bouquet Table"
 
 [node name="Player" parent="." unique_id=1064465184 instance=ExtResource("1_nnsk1")]
 position = Vector2(-1, 0)

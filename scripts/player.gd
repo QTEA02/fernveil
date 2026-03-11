@@ -24,7 +24,11 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 	if Input.is_action_just_pressed("interact"):
-		# First check Area2D interactables (mushrooms, etc.)
+		# Don't interact if a UI is open
+		if get_tree().paused:
+			return
+
+		# First check Area2D interactables (mushrooms, crafting stations, etc.)
 		var areas := interact_area.get_overlapping_areas()
 		if areas.size() > 0:
 			var closest := areas[0]
