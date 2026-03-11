@@ -34,6 +34,26 @@ func interact() -> void:
 			_harvest()
 
 func _plant() -> void:
+	var inventory = get_node_or_null("/root/Inventory")
+	if not inventory or inventory.selected_seed == "":
+		print("No seed selected! Open inventory [Tab] to select one.")
+		return
+
+	var seed_name: String = inventory.selected_seed
+	if not inventory.has_item(seed_name):
+		print("No %s seeds left!" % seed_name)
+		return
+
+	# Consume the seed and set crop_name to match
+	inventory.remove_item(seed_name, 1)
+	crop_name = seed_name
+
+	# Update sprite column based on seed type
+	var col: int = inventory.get_seed_column()
+	if col >= 0:
+		for i in stage_regions.size():
+			stage_regions[i].position.x = col * 32
+
 	state = State.GROWING
 	current_stage = 0
 	crop_sprite.visible = true
@@ -56,4 +76,7 @@ func _harvest() -> void:
 	current_stage = 0
 	crop_sprite.visible = false
 	grow_timer.stop()
+	var inventory = get_node_or_null("/root/Inventory")
+	if inventory:
+		inventory.add_item(crop_name, 1)
 	print("Harvested ", crop_name, "!")

@@ -29,6 +29,20 @@ var stage_coords: Array[Array] = [
 
 @export var crop_column: int = 0
 
+# Name of the item produced when harvesting each crop column
+var crop_names: Array[String] = [
+	"Generic Plant",  # column 0
+	"Herb",           # column 1
+	"Leafy Plant",    # column 2
+	"Pepper",         # column 3
+]
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("cycle_crop"):
+		crop_column = (crop_column + 1) % stage_coords.size()
+		var name = crop_names[crop_column] if crop_column < crop_names.size() else "Crop %d" % crop_column
+		print("Selected seed: %s" % name)
+
 func _process(delta: float) -> void:
 	var cells_to_advance: Array[Vector2i] = []
 	for cell in crop_stages:
@@ -54,29 +68,50 @@ func interact_at(world_pos: Vector2) -> bool:
 	if crop_stages.has(cell):
 		var data: Dictionary = crop_stages[cell]
 		if data["stage"] >= data["max_stages"] - 1:
-			# Harvest — reset to soil
+			# Harvest — reset to soil and add to inventory
+			var col: int = data["column"]
+			var item_name: String = "Crop"
+			if col < crop_names.size():
+				item_name = crop_names[col]
 			set_cell(cell, soil_source_id, soil_atlas_coord)
 			crop_stages.erase(cell)
-			print("Harvested crop!")
+			var inventory = get_node_or_null("/root/Inventory")
+			if inventory:
+				inventory.add_item(item_name, 1)
+			print("Harvested %s!" % item_name)
 			return true
 		else:
 			print("Growing... stage ", data["stage"] + 1, "/", data["max_stages"])
 			return true
 
-	# If this is a soil tile (no crop yet) — plant
+	# If this is a soil tile (no crop yet) — plant using selected seed
 	if source_id == soil_source_id:
-		var col: int = crop_column
-		if col < stage_coords.size():
-			var stages: Array = stage_coords[col]
-			crop_stages[cell] = {
-				"stage": 0,
-				"max_stages": stages.size(),
-				"column": col,
-				"timer": 0.0,
-			}
-			set_cell(cell, crop_source_id, stages[0])
-			print("Planted a crop!")
+		var inventory = get_node_or_null("/root/Inventory")
+		if not inventory or inventory.selected_seed == "":
+			print("No seed selected! Open inventory [Tab] to select one.")
 			return true
+
+		var seed_name: String = inventory.selected_seed
+		var col: int = inventory.get_seed_column()
+		if col < 0 or col >= stage_coords.size():
+			print("Invalid seed!")
+			return true
+
+		if not inventory.has_item(seed_name):
+			print("No %s seeds left!" % seed_name)
+			return true
+
+		inventory.remove_item(seed_name, 1)
+		var stages: Array = stage_coords[col]
+		crop_stages[cell] = {
+			"stage": 0,
+			"max_stages": stages.size(),
+			"column": col,
+			"timer": 0.0,
+		}
+		set_cell(cell, crop_source_id, stages[0])
+		print("Planted %s!" % seed_name)
+		return true
 
 	return false
 

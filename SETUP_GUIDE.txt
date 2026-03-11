@@ -154,11 +154,14 @@ LAYER STRUCTURE
   Player       (z_index  0)  - CharacterBody2D
   DayNightCycle              - CanvasModulate (screen tint + time tracking)
   TimeHUD      (CanvasLayer) - Clock, day counter, phase display
+  InventoryUI  (CanvasLayer) - Inventory panel (Tab to toggle)
 
 CONTROLS
 ---------
   WASD  - Move
   E     - Interact (plant, harvest, talk to objects)
+  Q     - Cycle selected crop type (Generic Plant → Herb → Leafy → Pepper)
+  Tab   - Open/close inventory
 
 FILE STRUCTURE
 ---------------
@@ -187,6 +190,8 @@ FILE STRUCTURE
     farm_layer.gd               - Tile-based farming system
     pickup.gd                   - Collectible items (disappear on pickup)
     interactable.gd             - Generic interactable (signs, NPCs — stays in world)
+    inventory.gd                - Inventory autoload (global item storage)
+    inventory_ui.gd             - Inventory UI panel (Tab to toggle)
     day_night_cycle.gd          - Day/night cycle (time, phases, screen tint)
     time_hud.gd                 - HUD displaying clock, day, and phase
     crop_plot.gd                - Standalone crop logic (legacy, use farm_layer.gd instead)

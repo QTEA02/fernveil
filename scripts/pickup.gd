@@ -12,5 +12,7 @@ func interact() -> void:
 		else:
 			text = "Picked up %s!" % item_name
 	print(text)
-	# TODO: add to inventory when inventory system exists
+	var inventory = get_node_or_null("/root/Inventory")
+	if inventory:
+		inventory.add_item(item_name, quantity)
 	queue_free()
