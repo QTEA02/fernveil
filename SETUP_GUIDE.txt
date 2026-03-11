@@ -18,7 +18,7 @@ PAINTING CROP PLOTS
 3. Paint soil tiles wherever you want plantable plots
 4. Run the game (F5), walk to a soil tile, press E to plant
 5. The tile will cycle through growth stages automatically
-6. Press E when fully grown to harvest (tile resets to soil)
+6. Prebesets to soil)
 
 SEED SELECTION & PLANTING
 --------------------------
@@ -180,20 +180,18 @@ Recipes show ingredient counts (green = have enough, red = not enough).
 Click "Craft" to consume ingredients and produce the result.
 Press E or Esc to close the crafting UI.
 
-Current stations use colored placeholder boxes (auto-generated).
-All 5 are placed under CraftingStations node in world.tscn — reposition in the editor.
-
-Replacing placeholders with real art:
-1. Open the station instance in the scene tree
-2. Add a Sprite2D child with your station texture
-3. The script auto-detects a Sprite2D and skips the placeholder visual
-4. Collision shapes and interaction are already set up automatically
-
-Placing a NEW crafting station:
-1. Instance scenes/crafting_station.tscn into world.tscn (under CraftingStations)
-2. In Inspector, set "Station Type" to one of:
+Placing a crafting station in the world:
+1. Create a new scene: Area2D root
+2. Add a Sprite2D child (station art)
+3. Add a CollisionShape2D child (for interaction, layer 2)
+4. Add a StaticBody2D child with its own CollisionShape2D (for collision, layer 1)
+5. Set the root Area2D:
+   - Collision > Layer = 2, Mask = none
+   - Script = scripts/crafting_station.gd
+6. In Inspector, set "Station Type" to one of:
    Drying Rack, Mortar & Pestle, Kettle, Press, Bouquet Table
-3. Position it in the viewport
+7. Save to scenes/ (e.g. scenes/drying_rack.tscn)
+8. Instance it in world.tscn
 
 Adding/changing recipes:
   Edit scripts/crafting_recipes.gd — each station has an array of recipes.
@@ -264,7 +262,4 @@ FILE STRUCTURE
     inventory_ui.gd             - Inventory UI panel (Tab to toggle)
     day_night_cycle.gd          - Day/night cycle (time, phases, screen tint)
     time_hud.gd                 - HUD displaying clock, day, and phase
-    crafting_recipes.gd         - Recipe data autoload (all crafting recipes)
-    crafting_station.gd         - Crafting station interactable (Area2D, press E)
-    crafting_ui.gd              - Crafting UI panel (opens from station)
     crop_plot.gd                - Standalone crop logic (legacy, use farm_layer.gd instead)
