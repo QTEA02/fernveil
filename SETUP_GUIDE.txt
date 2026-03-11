@@ -20,16 +20,54 @@ PAINTING CROP PLOTS
 5. The tile will cycle through growth stages automatically
 6. Press E when fully grown to harvest (tile resets to soil)
 
+SEED SELECTION & PLANTING
+--------------------------
+Planting requires a seed selected in the inventory:
+1. Press Tab to open inventory
+2. Click a seed to select it (highlighted green with [SELECTED])
+3. Close inventory (Tab), walk to a soil tile, press E to plant
+4. Planting consumes 1 seed from inventory
+5. Harvesting gives back the crop matching what was planted (e.g. plant Herb → harvest Herb)
+
+You start with 3 of each seed type. The HUD shows your selected seed in the bottom-left.
+
 DIFFERENT CROP TYPES
 ---------------------
-In FarmLayer's Inspector, change "Crop Column" to pick which crop gets planted:
-  Column 0 = generic plant
-  Column 1 = herb
-  Column 2 = leafy plant
-  Column 3 = pepper/tomato
+Each crop type is a column in plants.png (32px wide, rows = growth stages).
+  Column 0 = Generic Plant
+  Column 1 = Herb
+  Column 2 = Leafy Plant
+  Column 3 = Pepper
 
-The stage_coords array in scripts/farm_layer.gd maps each column to its
-growth stages. Add more entries to support more crop types.
+REPLACING CROP NAMES & ART WITH YOUR OWN
+------------------------------------------
+Update these three places to add/rename crops:
+
+1. scripts/inventory.gd — seed_columns dictionary (maps name → sprite column):
+     var seed_columns: Dictionary = {
+         "Moonpetal": 0,
+         "Whispergrass": 1,
+     }
+
+2. scripts/inventory.gd — _ready() starter seeds (match names above):
+     func _ready() -> void:
+         add_item("Moonpetal", 3)
+         add_item("Whispergrass", 3)
+
+3. scripts/farm_layer.gd — crop_names array (index = column number):
+     var crop_names: Array[String] = [
+         "Moonpetal",      # column 0
+         "Whispergrass",   # column 1
+     ]
+
+To add MORE crop types beyond the existing 4:
+1. Add a new column to plants.png (32px wide, 5 rows for growth stages)
+2. Add the name→column entry to seed_columns in inventory.gd
+3. Add the name to crop_names in farm_layer.gd
+4. Add a new row to stage_coords in farm_layer.gd:
+     [Vector2i(4, 0), Vector2i(4, 1), Vector2i(4, 2), Vector2i(4, 3), Vector2i(4, 4)],
+
+Everything else (inventory UI, planting, harvesting) picks up the new crops automatically.
 
 ADDING ROCKS/OBSTACLES (tile painting)
 ---------------------------------------
