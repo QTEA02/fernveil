@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+var overlay: ColorRect
 var panel: PanelContainer
 var item_list: VBoxContainer
 var is_open: bool = false
@@ -21,6 +22,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func toggle() -> void:
 	is_open = !is_open
+	overlay.visible = is_open
 	panel.visible = is_open
 	if is_open:
 		_refresh()
@@ -115,7 +117,7 @@ func _on_item_clicked(item_name: String) -> void:
 
 func _build_ui() -> void:
 	# Dark overlay behind panel
-	var overlay = ColorRect.new()
+	overlay = ColorRect.new()
 	overlay.color = Color(0, 0, 0, 0.4)
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(overlay)

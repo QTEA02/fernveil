@@ -171,6 +171,54 @@ Checking time from other scripts:
       # do night-only logic
   var time_text = cycle.get_time_string()  # e.g. "2:30 PM"
 
+DIALOGUE SYSTEM
+----------------
+Walk up to an NPC and press E to start dialogue.
+Press E to advance text, or click a choice button when choices appear.
+Text displays with a typewriter effect — press E to skip to full text.
+
+Placing an NPC:
+1. Instance scenes/npc.tscn into world.tscn (under NPCs node)
+2. In Inspector, set:
+   - "Npc Name" — display name in dialogue box
+   - "Dialogue Id" — which dialogue to trigger (key in dialogue_manager.gd)
+   - "Sprite Color" — placeholder color (ignored when real art is added)
+3. Position in the viewport
+
+Replacing NPC placeholder with real art:
+  Add a Sprite2D or AnimatedSprite2D child — the script skips the placeholder.
+
+  Using a static sprite (Sprite2D):
+  1. Select the NPC instance in the scene tree (e.g. NPCs > TestNPC)
+  2. Add a Sprite2D child node
+  3. Set Texture to your character image
+  4. If using a spritesheet, enable Region > Enabled = true
+  5. Set Region Rect to a single frame (e.g. x:0, y:0, w:48, h:48)
+  6. Optionally set Modulate to a different color to distinguish from the player
+
+  Using the player spritesheet as a quick test:
+  1. Add Sprite2D child, set Texture to assets/characters/Base.png
+  2. Enable Region, set Rect to one frame
+  3. Tint with Modulate color in Inspector
+
+  For animated NPCs:
+  Use AnimatedSprite2D instead, set up idle animations like the player.
+
+Adding new dialogue:
+  Edit scripts/dialogue_manager.gd, add entries to the dialogues dictionary.
+  Each dialogue is an Array of lines:
+    {"speaker": "Name", "text": "Hello!"}
+  Add choices to branch:
+    {"speaker": "Name", "text": "Question?", "choices": [
+        {"text": "Option A", "next": "other_dialogue_id"},
+        {"text": "Option B", "next": "another_id"},
+    ]}
+
+Signals (for hooking other systems):
+  dialogue_started()    - fires when dialogue begins
+  dialogue_ended()      - fires when dialogue finishes
+  dialogue_line_shown(speaker, text) - fires each line
+
 CRAFTING SYSTEM
 ----------------
 5 crafting stations: Drying Rack, Mortar & Pestle, Kettle, Press, Bouquet Table.
@@ -200,6 +248,38 @@ Adding/changing recipes:
 Recipe chain example:
   Herb (harvest) → Dried Herb (Drying Rack) → Herb Powder (Mortar & Pestle) → Plant Tonic (Kettle)
 
+PAUSE MENU & SAVE/LOAD
+------------------------
+Press Esc to open the pause menu. It has:
+  - Resume — close menu and unpause
+  - Save Game — save current state to disk
+  - Load Game — load the last save
+  - Quit — exit the game
+
+Saves to user://savegame.json (on Windows: %APPDATA%\Godot\app_userdata\Fernveil\).
+
+What gets saved:
+  - Inventory (all items + selected seed)
+  - Day/night cycle (hour, minute, day number)
+  - Player position
+  - Farm crops (growth stages, timers)
+
+You can also call from code:
+  SaveManager.save_game()   # returns true on success
+  SaveManager.load_game()   # returns true on success
+  SaveManager.has_save()    # check if a save file exists
+  SaveManager.delete_save() # delete the save file
+
+To add new data to save/load:
+  1. Open scripts/save_manager.gd
+  2. In save_game(), gather state into the data dictionary
+  3. In load_game(), restore state from the loaded data
+  Note: Dictionary keys must be strings for JSON. Use "x,y" format for Vector2i keys.
+
+Customizing the pause menu:
+  Edit scripts/pause_menu.gd — add new buttons in the _build_ui() function.
+  The "Options" button is a good future addition for audio/display settings.
+
 REPLACING ART WITH YOUR OWN
 -----------------------------
 Same grid layout (32x32 tiles):
@@ -223,6 +303,9 @@ LAYER STRUCTURE
   TimeHUD      (CanvasLayer) - Clock, day counter, phase display
   InventoryUI  (CanvasLayer) - Inventory panel (Tab to toggle)
   CraftingUI   (CanvasLayer) - Crafting panel (opens via station interaction)
+  NPCs         (Node2D)      - container for NPC characters
+  DialogueUI   (CanvasLayer) - Dialogue box (bottom of screen)
+  PauseMenu    (CanvasLayer) - Pause menu (Esc to toggle)
 
 CONTROLS
 ---------
@@ -230,6 +313,7 @@ CONTROLS
   E     - Interact (plant, harvest, talk to objects)
   Q     - Cycle selected crop type (Generic Plant → Herb → Leafy → Pepper)
   Tab   - Open/close inventory
+  Esc   - Pause menu (save, load, quit)
 
 FILE STRUCTURE
 ---------------
@@ -262,4 +346,9 @@ FILE STRUCTURE
     inventory_ui.gd             - Inventory UI panel (Tab to toggle)
     day_night_cycle.gd          - Day/night cycle (time, phases, screen tint)
     time_hud.gd                 - HUD displaying clock, day, and phase
+    dialogue_manager.gd         - Dialogue autoload (dialogue data, state, branching)
+    dialogue_ui.gd              - Dialogue UI (typewriter text, choices)
+    npc.gd                      - NPC interactable (Area2D, triggers dialogue)
+    save_manager.gd             - Save/load autoload (data persistence)
+    pause_menu.gd               - Pause menu (Esc — save, load, quit)
     crop_plot.gd                - Standalone crop logic (legacy, use farm_layer.gd instead)

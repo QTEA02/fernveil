@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+var overlay: ColorRect
 var panel: PanelContainer
 var recipe_list: VBoxContainer
 var title_label: Label
@@ -10,6 +11,7 @@ func _ready() -> void:
 	layer = 20
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_build_ui()
+	overlay.visible = false
 	panel.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -20,6 +22,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func open(station_type: String) -> void:
 	current_station = station_type
 	is_open = true
+	overlay.visible = true
 	panel.visible = true
 	title_label.text = station_type
 	_refresh()
@@ -27,6 +30,7 @@ func open(station_type: String) -> void:
 
 func close() -> void:
 	is_open = false
+	overlay.visible = false
 	panel.visible = false
 	get_tree().paused = false
 
@@ -140,7 +144,7 @@ func _on_craft(recipe: Dictionary) -> void:
 
 func _build_ui() -> void:
 	# Dark overlay
-	var overlay = ColorRect.new()
+	overlay = ColorRect.new()
 	overlay.color = Color(0, 0, 0, 0.4)
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(overlay)

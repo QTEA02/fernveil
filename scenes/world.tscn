@@ -12,6 +12,9 @@
 [ext_resource type="PackedScene" path="res://scenes/crop_plot.tscn" id="10_w7kh3"]
 [ext_resource type="Script" uid="uid://cn441gfbbx0yk" path="res://scripts/crafting_ui.gd" id="11_craftui"]
 [ext_resource type="PackedScene" path="res://scenes/crafting_station.tscn" id="12_craftstation"]
+[ext_resource type="Script" uid="uid://cwq8tay8odind" path="res://scripts/dialogue_ui.gd" id="13_dialogueui"]
+[ext_resource type="PackedScene" path="res://scenes/npc.tscn" id="14_npc"]
+[ext_resource type="Script" uid="uid://mlqbngefsdrs" path="res://scripts/pause_menu.gd" id="15_pausemenu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rwgxs"]
 texture = ExtResource("2_ground")
@@ -332,9 +335,6 @@ position = Vector2(-55, 39)
 [node name="Mushroom2" parent="Pickups" unique_id=732417841 instance=ExtResource("4_k0juu")]
 position = Vector2(-52, -48)
 
-[node name="Mushroom3" parent="Pickups" unique_id=1454062627 instance=ExtResource("4_k0juu")]
-position = Vector2(39, 58)
-
 [node name="Mushroom4" parent="Pickups" unique_id=404422904 instance=ExtResource("4_k0juu")]
 position = Vector2(21, -51)
 
@@ -369,9 +369,10 @@ text = "Day 1"
 horizontal_alignment = 1
 
 [node name="PhaseLabel" type="Label" parent="TimeHUD" unique_id=1523894157]
-offset_top = 42.0
-offset_right = 150.0
-offset_bottom = 72.0
+offset_left = 3.0
+offset_top = 40.0
+offset_right = 153.0
+offset_bottom = 70.0
 theme_override_colors/font_color = Color(0.9, 0.85, 0.6, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 theme_override_constants/shadow_offset_x = 1
@@ -381,9 +382,10 @@ text = "Day"
 horizontal_alignment = 1
 
 [node name="SeedLabel" type="Label" parent="TimeHUD" unique_id=842906753]
-offset_top = 62.0
-offset_right = 150.0
-offset_bottom = 82.0
+offset_left = 2.0
+offset_top = 63.0
+offset_right = 152.0
+offset_bottom = 83.0
 theme_override_colors/font_color = Color(0.6, 0.8, 0.5, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
 theme_override_constants/shadow_offset_x = 1
@@ -417,6 +419,25 @@ station_type = "Press"
 [node name="BouquetTable" parent="CraftingStations" unique_id=1390670730 instance=ExtResource("12_craftstation")]
 position = Vector2(-108, 9)
 station_type = "Bouquet Table"
+
+[node name="NPCs" type="Node2D" parent="." unique_id=1864868862]
+
+[node name="TestNPC" parent="NPCs" unique_id=1004092597 instance=ExtResource("14_npc")]
+position = Vector2(50, 50)
+npc_name = "Stranger"
+sprite_color = Color(0.5, 0.4, 0.6, 1)
+
+[node name="Maren" parent="NPCs" unique_id=1635320792 instance=ExtResource("14_npc")]
+position = Vector2(100, 50)
+npc_name = "Maren"
+dialogue_id = "shopkeeper_intro"
+sprite_color = Color(0.6, 0.45, 0.3, 1)
+
+[node name="DialogueUI" type="CanvasLayer" parent="." unique_id=1506457039]
+script = ExtResource("13_dialogueui")
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1379312541]
+script = ExtResource("15_pausemenu")
 
 [node name="Player" parent="." unique_id=1064465184 instance=ExtResource("1_nnsk1")]
 position = Vector2(-1, 0)

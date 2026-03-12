@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 Inventory="*res://scripts/inventory.gd"
 CraftingRecipes="*res://scripts/crafting_recipes.gd"
+DialogueManager="*res://scripts/dialogue_manager.gd"
+SaveManager="*res://scripts/save_manager.gd"
 
 [display]
 
